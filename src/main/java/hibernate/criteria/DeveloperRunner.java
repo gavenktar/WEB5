@@ -34,7 +34,7 @@ public class DeveloperRunner {
 
         System.out.println("List of Developers with experience 3 years:");
         developerRunner.listDevelopersOverThreeYears();
-
+        developerRunner.totalSalary();
         sessionFactory.close();
     }
 
@@ -77,10 +77,10 @@ public class DeveloperRunner {
 
         transaction = session.beginTransaction();
         CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<Developer> cr = cb.createQuery(Developer.class);
+        CriteriaQuery<Number> cr = cb.createQuery(Number.class);
         Root<Developer> root = cr.from(Developer.class);
-        //cr.select(cb.sum(root.get("salary"))); //Я рили хз... Почему он тут ругается...
-        Query<Developer> q = session.createQuery(cr);
+        cr.select(cb.sum(root.get("salary")));
+        Query<Number> q = session.createQuery(cr);
         List totalSalary = q.getResultList();
         System.out.println("Total salary of all developers: " + totalSalary.get(0));
         transaction.commit();
